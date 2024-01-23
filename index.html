@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="index.js"></script>
     <link rel="stylesheet" href="style.css">
     <title>Морской бой</title>
 </head>
@@ -57,6 +56,7 @@
             let cell = document.getElementById(location);
             cell.setAttribute('class', 'miss');
         } 
+       
     };
     let model = {boardSize: 7,
                  numShips: 3,
@@ -72,8 +72,8 @@
                 let index = ship.locations.indexOF(guess);
                 if (index => 0) {
                     ship.hits[index] = 'hit'
-                    viev.displayHit(guess);
-                    viev.displayMessage('HIT');
+                    view.displayHit(guess);
+                    view.displayMessage('HIT');
                     if (this.isSunk(ship)) {
                         view.displayMessage('Ты потопил корабль!');
                         this.shipSunk++;
@@ -127,6 +127,28 @@
           }
           return null;
         };
+        function init () {
+        let fireButton = document.getElementById('fireButton');
+        fireButton.onclick = handleFireButton;
+        let guessInput = document.getElementById('guessInput');
+        guessInput.onkeypress = handleKeyPress;
+        };
+
+        function handleKeyPress (e) {
+            let fireButton = document.getElementById('fireButton');
+            if (e.keyCode === 13) {
+                fireButton.click();
+                return false;
+            }
+        }
+
+        function handleFireButton() {
+            let guessInput = document.getElementById('guessInput')
+            let guess = guessInput.value;
+            controller.processGuesses(guess);
+            guessInput.value = '';
+        };
+        window.onload = init;
     </script>
     </div>
 </body>
